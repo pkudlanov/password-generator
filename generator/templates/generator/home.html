@@ -6,33 +6,90 @@
 </nav>
 
 <div class="container" style="max-width: 650px;">
-    <h1>Password Generator</h1>
 
-    <form action="{% url 'password' %}" class="mt-3">
-        <select name="length" class="form-select">
-            <option value="12" selected>Select the length of your password</option>
-            <option value="6">6</option>
-            <option value="7">7</option>
-            <option value="8">8</option>
-            <option value="9">9</option>
-            <option value="10">10</option>
-            <option value="11">11</option>
-            <option value="12">12</option>
-            <option value="13">13</option>
-            <option value="14">14</option>
-        </select>
-        <div class="form-check form-switch my-2">
-            <input class="form-check-input" type="checkbox" name="uppercase">
-            <label class="form-check-label" for="uppercase">Uppercase Letters</label>
+    <div class="container text-center my-4">
+        <h1>Secure Password Generator</h1>
+    </div>
+
+    <div class="container p-0" style="max-width: 650px;">
+
+
+        <div class="alert alert-success row">
+            <div class="col-sm-10 col-12">
+                <h2 class="text-start" id="myInput">
+                    {{ password }}
+                </h2>
+            </div>
+            <div class="col-sm-2 col-12">
+                <button type="button" class="btn btn-outline-success btn-lg pull-right" onclick="copyText()">
+                    Copy
+                </button>
+            </div>
         </div>
-        <div class="form-check form-switch my-2">
-            <input class="form-check-input" type="checkbox" name="numbers">
-            <label class="form-check-label" for="numbers">Numbers</label>
+
+    </div>
+
+    <form action="{% url 'home' %}" class="mt-3 row justify-content-around">
+
+        <div class="col-sm-4 col-12">
+            <select name="length" id="length" class="form-select">
+                <option value="12" selected>Select the length of your password</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+                <option value="10">10</option>
+                <option value="11">11</option>
+                <option value="12">12</option>
+                <option value="13">13</option>
+                <option value="14">14</option>
+            </select>
         </div>
-        <div class="form-check form-switch my-2">
-            <input class="form-check-input" type="checkbox" name="special">
-            <label class="form-check-label" for="special">Special Characters</label>
+
+        <div class="col-sm-4 col-12">
+            <div class="form-check form-switch my-2 text-right float-right">
+                <input class="form-check-input" type="checkbox" name="uppercase" {{ upper }}>
+                <label class="form-check-label" for="uppercase">Uppercase Letters</label>
+            </div>
+            <div class="form-check form-switch my-2">
+                <input class="form-check-input" type="checkbox" name="numbers" {{ numbers }}>
+                <label class="form-check-label" for="numbers">Numbers</label>
+            </div>
+            <div class="form-check form-switch my-2">
+                <input class="form-check-input" type="checkbox" name="special" {{ special }}>
+                <label class="form-check-label" for="special">Special Characters</label>
+            </div>
         </div>
-        <input type="submit" value="Generate password" class="btn btn-primary mt-2">
+
+        <input type="submit" value="Generate password" class="btn btn-success btn-lg mt-2">
+
     </form>
+
 </div>
+
+{{ length|json_script:"length-data" }}
+
+<script>
+    function copyText() {
+        let copyText = document.getElementById("myInput").innerText;
+        let tempInput = document.createElement("input");
+        tempInput.type = "text";
+        tempInput.value = copyText;
+
+        document.body.appendChild(tempInput);
+        tempInput.select();
+
+        document.execCommand("copy");
+
+        document.body.removeChild(tempInput);
+    }
+
+    function selectElement(id, valueToSelect) {
+        let element = document.getElementById(id);
+        element.value = valueToSelect;
+    }
+
+    const passLength = JSON.parse(document.getElementById('length-data').textContent);
+
+    selectElement('length', passLength);
+</script>
