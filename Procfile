@@ -1,1 +1,1 @@
-web: gunicorn get_er_done.wsgi
+web: gunicorn password_generator.wsgi
